@@ -185,6 +185,6 @@ docker stop strapi-tutorial
 ## HTML
 
 * [Document.createDocumentFragment()](https://developer.mozilla.org/ja/docs/Web/API/Document/createDocumentFragment)
-* [<template>: コンテンツテンプレート要素](https://developer.mozilla.org/ja/docs/Web/HTML/Element/template)
+* [template: コンテンツテンプレート要素](https://developer.mozilla.org/ja/docs/Web/HTML/Element/template)
 * [フェッチ API の使用](https://developer.mozilla.org/ja/docs/Web/API/Fetch_API/Using_Fetch)
 * [Marked.js](https://github.com/markedjs/marked)
