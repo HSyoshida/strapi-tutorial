@@ -128,8 +128,24 @@ cd /projects/strapi/my-project/
 
 ### Strapi起動(開発サーバ)
 
+※後述の「Dockerfileからコンテナを作成・起動」で起動しておく
+
 ```
 yarn develop
+```
+
+起動後、<http://localhost:1337/admin> にアクセス
+
+## 疎通確認
+
+### アクセストークン発行
+
+[Managing API tokens](https://docs.strapi.io/user-docs/settings/API-tokens)でアクセストークンを発行したら[index.html](https://github.com/HSyoshida/strapi-tutorial/blob/main/index.html#L57)を修正
+```
+headers: {
+    // 本当はSecretとかでトークンは管理する
+    "Authorization": "bearer <AccessToken>"
+}
 ```
 
 ## コンテナの作業を保存・再開
