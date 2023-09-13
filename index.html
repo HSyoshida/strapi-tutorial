@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Strapi Sample</title>
+    <link href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        header {
+            font-size: 45px;
+            border-bottom: double;
+        }
+
+        article {
+            padding: 10px;
+            border-bottom: solid;
+            border-width: 1px;
+        }
+
+        .article-header h1 {
+            padding: 4px;
+            font-size: 40px;
+            background-color: aqua;
+        }
+
+        .article-header {
+            border-bottom: dotted;
+            border-width: 1px;
+        }
+
+        .article-content {
+            padding: 10px 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>Strapi Sample</header>
+    <main></main>
+    <template id="article-template">
+        <article>
+            <section class="article-header">
+                <h1></h1>
+                <p>公開日：<time></time></p>
+            </section>
+            <section class="article-content"></section>
+        </article>
+    </template>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // 非同期でAPIからデータを取得
+        async function getData() {
+            const response = await fetch('http://localhost:1337/api/sample-comtents', {
+                method: "GET",
+                cache: "no-cache",
+                headers: {
+                    // 本当はSecretとかでトークンは管理する
+                    "Authorization": "bearer <AccessToken>"
+                }
+            });
+            return response.json();
+        }
+
+        // template要素のインスタンス
+        const template = document.querySelector('#article-template');
+
+        // データの取得が完了したら記事をコンテンツ領域に挿入
+        getData().then((json) => {
+            for (const data of json.data) {
+                // template要素のインスタンスからNodeを複製
+                const clone = template.content.cloneNode(true);
+
+                // 各要素にテキストを挿入
+                clone.querySelector('.article-header h1').textContent = data.attributes.title;
+                clone.querySelector('.article-header time').textContent = data.attributes.publishedAt;
+                // 記事本文はMarkdown.jsでマークアップ
+                clone.querySelector('.article-content').innerHTML = marked.parse(data.attributes.content);
+
+                // フラグメント作成
+                const fragment = document.createDocumentFragment();
+                fragment.appendChild(clone);
+
+                // フラグメントをコンテンツ領域に挿入
+                document.querySelector('main').appendChild(fragment);
+            }
+        });
+    </script>
+</body>
+
+</html>
